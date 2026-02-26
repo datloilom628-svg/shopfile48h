@@ -1,0 +1,3573 @@
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopFile24h - Hệ Thống Bán File & Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #ff9800;
+            --dark: #333;
+            --light: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: #FFD700;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .balance, .diamonds {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .diamonds {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+        }
+        
+        .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .menu-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Login/Register Forms */
+        .auth-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            color: white;
+        }
+        
+        .auth-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+        }
+        
+        .btn-info {
+            background: #17a2b8;
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
+        .message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .error {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .link a {
+            color: #ffeb3b;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Sidebar Menu */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 350px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .sidebar.active {
+            right: 0;
+        }
+        
+        .sidebar-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .sidebar-header h3 {
+            margin: 0;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .sidebar-content {
+            padding: 20px;
+        }
+        
+        .user-profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary);
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+        }
+        
+        /* Products */
+        .section-title {
+            margin: 30px 0 20px;
+            color: var(--dark);
+            font-size: 24px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .product-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .product-price {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .product-body {
+            padding: 20px;
+        }
+        
+        .product-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .qr-code img {
+            max-width: 200px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: var(--success);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1002;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        /* Wheel */
+        .wheel-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 30px auto;
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+        
+        .wheel-item {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .spin-btn {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #FF416C, #FF4B2B);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255,65,108,0.3);
+        }
+        
+        .spin-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(255,65,108,0.4);
+        }
+        
+        .spin-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            z-index: 10;
+        }
+        
+        .pointer::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 30px solid #FFD700;
+        }
+        
+        /* Admin Panel */
+        .admin-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .admin-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            flex-wrap: wrap;
+        }
+        
+        .admin-tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .admin-content {
+            display: none;
+        }
+        
+        .admin-content.active {
+            display: block;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .data-table th {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .data-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .status-pending { color: var(--warning); }
+        .status-approved { color: var(--success); }
+        .status-rejected { color: var(--danger); }
+        
+        /* Product status */
+        .product-sold {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--danger);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: #f8f9fa;
+        }
+        
+        .file-upload input {
+            display: none;
+        }
+        
+        .file-upload label {
+            display: block;
+            cursor: pointer;
+        }
+        
+        .file-upload i {
+            font-size: 48px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        /* Withdraw Info Box */
+        .withdraw-info {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .withdraw-info h5 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+        }
+        
+        .withdraw-conditions {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .withdraw-conditions ul {
+            margin-left: 20px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .admin-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+    
+    <!-- Main Content -->
+    <div id="app">
+        <!-- Login/Register Pages -->
+        <div id="authPage" style="display: block;">
+            <div class="container">
+                <div class="auth-container" id="loginForm">
+                    <div class="logo" style="text-align: center; margin-bottom: 20px;">
+                        <i class="fas fa-shopping-cart"></i> ShopFile24h
+                    </div>
+                    <h2>Đăng Nhập</h2>
+                    
+                    <div class="message error" id="loginError" style="display: none;"></div>
+                    
+                    <form onsubmit="return login(event)">
+                        <div class="form-group">
+                            <label for="loginUsername">Tên đăng nhập:</label>
+                            <input type="text" id="loginUsername" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">Mật khẩu:</label>
+                            <input type="password" id="loginPassword" class="form-control" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-block">Đăng Nhập</button>
+                    </form>
+                    
+                    <div class="link">
+                        Chưa có tài khoản? <a href="#" onclick="showRegister()">Đăng ký ngay</a>
+                    </div>
+                </div>
+                
+                <div class="auth-container" id="registerForm" style="display: none;">
+                    <div class="logo" style="text-align: center; margin-bottom: 20px;">
+                        <i class="fas fa-shopping-cart"></i> ShopFile24h
+                    </div>
+                    <h2>Đăng Ký</h2>
+                    
+                    <div class="message error" id="registerError" style="display: none;"></div>
+                    <div class="message success" id="registerSuccess" style="display: none;"></div>
+                    
+                    <form onsubmit="return register(event)">
+                        <div class="form-group">
+                            <label for="regUsername">Tên đăng nhập:</label>
+                            <input type="text" id="regUsername" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regPassword">Mật khẩu:</label>
+                            <input type="password" id="regPassword" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regConfirmPassword">Xác nhận mật khẩu:</label>
+                            <input type="password" id="regConfirmPassword" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regBirthdate">Ngày sinh:</label>
+                            <input type="date" id="regBirthdate" class="form-control" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-block">Đăng Ký</button>
+                    </form>
+                    
+                    <div class="link">
+                        Đã có tài khoản? <a href="#" onclick="showLogin()">Đăng nhập ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- User Dashboard -->
+        <div id="userDashboard" style="display: none;">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-shopping-cart"></i>
+                    ShopFile24h
+                </div>
+                
+                <div class="user-info">
+                    <div class="balance">
+                        <i class="fas fa-wallet"></i> <span id="userBalance">0</span>đ
+                    </div>
+                    <div class="diamonds">
+                        <i class="fas fa-gem"></i> <span id="userDiamonds">0</span> KC
+                    </div>
+                    <button class="menu-btn" onclick="openMenu()" id="menuBtn">
+                        <i class="fas fa-bars"></i>
+                        <span class="badge" id="unreadBadge" style="display: none;">0</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="container">
+                <!-- Deposit Button -->
+                <button class="spin-btn" onclick="openDepositModal()" style="margin-bottom: 20px; width: 100%;">
+                    <i class="fas fa-coins"></i> NẠP TIỀN NGAY
+                </button>
+                
+                <!-- Wheel Section -->
+                <div class="wheel-section" id="wheelSection">
+                    <h2 class="section-title">VÒNG QUAY MAY MẮN</h2>
+                    <p id="wheelMessage">Nạp 100.000đ trở lên để quay nhận Kim Cương!</p>
+                    
+                    <div class="wheel-container">
+                        <div class="pointer"></div>
+                        <div class="wheel" id="wheel">
+                            <!-- Wheel items generated by JS -->
+                        </div>
+                    </div>
+                    
+                    <button class="spin-btn" id="spinBtn" onclick="spinWheel()">
+                        <i class="fas fa-redo"></i> QUAY NGAY
+                    </button>
+                </div>
+                
+                <!-- Files Section -->
+                <h2 class="section-title">FILE CAO CẤP</h2>
+                <div class="products-grid" id="filesGrid">
+                    <!-- Files loaded by JS -->
+                </div>
+                
+                <!-- Accounts Section -->
+                <h2 class="section-title">ACCOUNT CLONE (5K)</h2>
+                <div class="products-grid" id="accountsGrid">
+                    <!-- Accounts loaded by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" style="display: none;">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-user-shield"></i>
+                    Admin Panel - ShopFile24h
+                </div>
+                
+                <div class="user-info">
+                    <span>Xin chào, <strong id="adminName">Admin</strong></span>
+                    <button class="btn btn-danger" onclick="adminLogout()" style="padding: 8px 15px;">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </button>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="admin-panel">
+                    <div class="admin-tabs">
+                        <button class="admin-tab active" onclick="switchAdminTab('users')">Quản lý Users</button>
+                        <button class="admin-tab" onclick="switchAdminTab('deposits')">Lệnh nạp tiền</button>
+                        <button class="admin-tab" onclick="switchAdminTab('products')">Quản lý Sản phẩm</button>
+                        <button class="admin-tab" onclick="switchAdminTab('wheel')">Cài đặt Vòng quay</button>
+                        <button class="admin-tab" onclick="switchAdminTab('banking')">QR Banking</button>
+                        <button class="admin-tab" onclick="switchAdminTab('withdraws')">Yêu cầu rút KC</button>
+                        <button class="admin-tab" onclick="switchAdminTab('stats')">Thống kê</button>
+                    </div>
+                    
+                    <!-- Users Management -->
+                    <div class="admin-content active" id="usersTab">
+                        <h3>Quản lý Người dùng</h3>
+                        <div class="data-table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                        <th>Ngày sinh</th>
+                                        <th>Số dư</th>
+                                        <th>Kim cương</th>
+                                        <th>Ngày đăng ký</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTable">
+                                    <!-- Users loaded by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Deposits Management -->
+                    <div class="admin-content" id="depositsTab">
+                        <h3>Quản lý Nạp tiền</h3>
+                        <div class="data-table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>Loại</th>
+                                        <th>Số tiền</th>
+                                        <th>Thông tin</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thời gian</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="depositsTable">
+                                    <!-- Deposits loaded by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Management -->
+                    <div class="admin-content" id="productsTab">
+                        <h3>Quản lý Sản phẩm</h3>
+                        <button class="btn" onclick="showAddProductModal()" style="margin-bottom: 20px;">
+                            <i class="fas fa-plus"></i> Thêm sản phẩm
+                        </button>
+                        
+                        <h4>Files (20k-500k)</h4>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên</th>
+                                    <th>Giá</th>
+                                    <th>Link file</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsFileTable">
+                                <!-- Products loaded by JS -->
+                            </tbody>
+                        </table>
+                        
+                        <h4 style="margin-top: 30px;">Account Clone (5k)</h4>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsAccountTable">
+                                <!-- Accounts loaded by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Wheel Settings -->
+                    <div class="admin-content" id="wheelTab">
+                        <h3>Cài đặt Vòng quay</h3>
+                        <form onsubmit="return saveWheelSettings(event)">
+                            <div class="form-group">
+                                <label>Kim cương tối thiểu:</label>
+                                <input type="number" id="wheelMin" class="form-control" min="1" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Kim cương tối đa:</label>
+                                <input type="number" id="wheelMax" class="form-control" min="1" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Phần trăm xác suất (tổng 100%):</label>
+                                <div id="wheelProbabilities">
+                                    <!-- Generated by JS -->
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn">Lưu cài đặt</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Banking QR -->
+                    <div class="admin-content" id="bankingTab">
+                        <h3>Quản lý QR Banking</h3>
+                        <button class="btn" onclick="showAddQRModal()" style="margin-bottom: 20px;">
+                            <i class="fas fa-plus"></i> Thêm QR mới
+                        </button>
+                        
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên ngân hàng</th>
+                                    <th>Số tài khoản</th>
+                                    <th>Chủ tài khoản</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="qrTable">
+                                <!-- QR codes loaded by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Withdraws Management -->
+                    <div class="admin-content" id="withdrawsTab">
+                        <h3>Quản lý Yêu cầu Rút Kim Cương</h3>
+                        <div class="data-table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>Số KC</th>
+                                        <th>ID Game</th>
+                                        <th>Ghi chú</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thời gian</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="withdrawsTable">
+                                    <!-- Withdraws loaded by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Statistics -->
+                    <div class="admin-content" id="statsTab">
+                        <h3>Thống kê</h3>
+                        <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+                            <div style="background: #f5f5f5; padding: 20px; border-radius: 10px;">
+                                <h4>Tổng số user</h4>
+                                <p id="totalUsers" style="font-size: 24px; font-weight: bold;">0</p>
+                            </div>
+                            <div style="background: #f5f5f5; padding: 20px; border-radius: 10px;">
+                                <h4>Tổng doanh thu</h4>
+                                <p id="totalRevenue" style="font-size: 24px; font-weight: bold;">0đ</p>
+                            </div>
+                            <div style="background: #f5f5f5; padding: 20px; border-radius: 10px;">
+                                <h4>User nạp nhiều nhất</h4>
+                                <p id="topDepositUser" style="font-size: 18px; font-weight: bold;">-</p>
+                            </div>
+                            <div style="background: #f5f5f5; padding: 20px; border-radius: 10px;">
+                                <h4>Tổng kim cương đã quay</h4>
+                                <p id="totalDiamonds" style="font-size: 24px; font-weight: bold;">0</p>
+                            </div>
+                            <div style="background: #f5f5f5; padding: 20px; border-radius: 10px;">
+                                <h4>Tổng KC đã rút</h4>
+                                <p id="totalWithdrawn" style="font-size: 24px; font-weight: bold;">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-user-circle"></i> TÀI KHOẢN</h3>
+            <button class="close-btn" onclick="closeMenu()">&times;</button>
+        </div>
+        
+        <div class="sidebar-content">
+            <div class="user-profile">
+                <img src="https://ui-avatars.com/api/?name=User&background=random" 
+                     class="avatar" 
+                     id="avatarImg"
+                     onclick="document.getElementById('avatarInput').click()">
+                <h3 id="sidebarUsername">User</h3>
+                <p><i class="fas fa-birthday-cake"></i> <span id="sidebarBirthdate">01/01/2000</span></p>
+                
+                <input type="file" id="avatarInput" accept="image/*" style="display: none;" onchange="uploadAvatar()">
+                <button class="btn" onclick="document.getElementById('avatarInput').click()" style="margin-top: 10px;">
+                    <i class="fas fa-camera"></i> Đổi avatar
+                </button>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#" onclick="showProfile()">
+                        <i class="fas fa-id-card"></i> Hồ sơ cá nhân
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="showMessages()">
+                        <i class="fas fa-envelope"></i> Hộp thư
+                        <span class="badge" id="sidebarUnreadBadge" style="position: static; display: none;">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="showPurchaseHistory()">
+                        <i class="fas fa-history"></i> Lịch sử mua hàng
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="showDepositHistory()">
+                        <i class="fas fa-money-bill-wave"></i> Lịch sử nạp tiền
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="showSpinHistory()">
+                        <i class="fas fa-trophy"></i> Lịch sử quay
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="showWithdrawSection()">
+                        <i class="fas fa-money-bill-wave"></i> Rút Kim Cương
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="openDepositModal()">
+                        <i class="fas fa-coins"></i> Nạp tiền
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="logoutUser()">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- Profile Details -->
+            <div id="profileDetails" style="display: none;">
+                <h4><i class="fas fa-info-circle"></i> Thông tin cá nhân</h4>
+                <p><strong>Tên đăng nhập:</strong> <span id="profileUsername">-</span></p>
+                <p><strong>Ngày sinh:</strong> <span id="profileBirthdate">-</span></p>
+                <p><strong>Số dư:</strong> <span id="profileBalance">0</span>đ</p>
+                <p><strong>Kim cương:</strong> <span id="profileDiamonds">0</span></p>
+                <p><strong>Ngày tham gia:</strong> <span id="profileJoinDate">-</span></p>
+            </div>
+            
+            <!-- Messages -->
+            <div id="messagesSection" style="display: none;">
+                <h4><i class="fas fa-envelope"></i> Tin nhắn</h4>
+                <div id="messagesList"></div>
+            </div>
+            
+            <!-- Purchase History -->
+            <div id="purchaseHistory" style="display: none;">
+                <h4><i class="fas fa-history"></i> Lịch sử mua hàng</h4>
+                <div id="purchaseList"></div>
+            </div>
+            
+            <!-- Deposit History -->
+            <div id="depositHistory" style="display: none;">
+                <h4><i class="fas fa-money-bill-wave"></i> Lịch sử nạp tiền</h4>
+                <div id="depositList"></div>
+            </div>
+            
+            <!-- Spin History -->
+            <div id="spinHistory" style="display: none;">
+                <h4><i class="fas fa-trophy"></i> Lịch sử quay</h4>
+                <div id="spinList"></div>
+            </div>
+            
+            <!-- Withdraw Section -->
+            <div id="withdrawSection" style="display: none;">
+                <h4><i class="fas fa-money-bill-wave"></i> Rút Kim Cương</h4>
+                <div class="withdraw-info">
+                    <h5>Điều kiện rút:</h5>
+                    <div class="withdraw-conditions">
+                        <ul>
+                            <li>Số KC tối thiểu: 100</li>
+                            <li>Số KC tối đa: 700</li>
+                            <li>Phí xử lý: 0%</li>
+                            <li>Thời gian xử lý: 24 giờ</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <form onsubmit="return submitWithdraw(event)">
+                    <div class="form-group">
+                        <label>Số KC muốn rút (100-700):</label>
+                        <input type="number" id="withdrawAmount" class="form-control" min="100" max="700" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ID Game (Nickname hoặc UID):</label>
+                        <input type="text" id="gameId" class="form-control" required placeholder="VD: Player123 hoặc 123456789">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Thông tin bổ sung:</label>
+                        <textarea id="withdrawNote" class="form-control" rows="2" placeholder="Thông tin thêm về tài khoản game..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-block btn-warning">
+                        <i class="fas fa-paper-plane"></i> GỬI YÊU CẦU RÚT
+                    </button>
+                </form>
+                
+                <!-- Withdraw History -->
+                <h5 style="margin-top: 30px;">Lịch sử rút KC</h5>
+                <div id="withdrawList"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Deposit Modal -->
+    <div class="modal" id="depositModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-coins"></i> NẠP TIỀN</h3>
+                <button class="modal-close" onclick="closeDepositModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('card')">Thẻ Cào</button>
+                    <button class="tab-btn" onclick="switchTab('bank')">Banking</button>
+                </div>
+                
+                <!-- Card Deposit -->
+                <div id="cardTab" class="tab-content active">
+                    <form onsubmit="return depositCard(event)">
+                        <div class="form-group">
+                            <label>Nhà mạng:</label>
+                            <select id="cardTelecom" class="form-control" required>
+                                <option value="VIETTEL">Viettel</option>
+                                <option value="VINAPHONE">Vinaphone</option>
+                                <option value="MOBIFONE">Mobifone</option>
+                                <option value="ZING">Zing</option>
+                                <option value="GATE">Gate</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Mệnh giá:</label>
+                            <select id="cardDenomination" class="form-control" required>
+                                <option value="10000">10.000đ</option>
+                                <option value="20000">20.000đ</option>
+                                <option value="50000">50.000đ</option>
+                                <option value="100000">100.000đ</option>
+                                <option value="200000">200.000đ</option>
+                                <option value="500000">500.000đ</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Số seri:</label>
+                            <input type="text" id="cardSerial" class="form-control" required placeholder="Nhập số seri">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Mã thẻ:</label>
+                            <input type="text" id="cardPin" class="form-control" required placeholder="Nhập mã thẻ">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-block">
+                            <i class="fas fa-paper-plane"></i> NẠP THẺ
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Bank Deposit -->
+                <div id="bankTab" class="tab-content">
+                    <div id="bankQRCode" class="qr-code">
+                        <!-- QR code will be loaded here -->
+                    </div>
+                    
+                    <form onsubmit="return depositBank(event)">
+                        <div class="form-group">
+                            <label>Ngân hàng:</label>
+                            <input type="text" id="bankName" class="form-control" required placeholder="VD: Vietcombank">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Số tài khoản:</label>
+                            <input type="text" id="bankAccount" class="form-control" required placeholder="Số TK của bạn">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Số tiền:</label>
+                            <input type="number" id="bankAmount" class="form-control" required min="10000" placeholder="Nhập số tiền">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Mã giao dịch ngẫu nhiên:</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="bankTransactionCode" class="form-control" required 
+                                       placeholder="VD: bunbohuy12">
+                                <button type="button" class="btn" onclick="generateRandomCode()" 
+                                        style="width: auto; padding: 10px 15px;">
+                                    Random
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-block">
+                            <i class="fas fa-university"></i> GỬI YÊU CẦU
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #4CAF50;">
+                <h3><i class="fas fa-check-circle"></i> THÀNH CÔNG</h3>
+                <button class="modal-close" onclick="closeSuccessModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="successContent">
+                <!-- Content will be filled by JS -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Product Modal -->
+    <div class="modal" id="addProductModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus"></i> Thêm sản phẩm</h3>
+                <button class="modal-close" onclick="closeAddProductModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="return addProduct(event)">
+                    <div class="form-group">
+                        <label>Loại sản phẩm:</label>
+                        <select id="productType" class="form-control" onchange="toggleProductFields()" required>
+                            <option value="file">File</option>
+                            <option value="account">Account Clone</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tên sản phẩm:</label>
+                        <input type="text" id="productName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group" id="priceField">
+                        <label>Giá (VNĐ):</label>
+                        <input type="number" id="productPrice" class="form-control" min="1000" value="20000">
+                    </div>
+                    
+                    <div class="form-group" id="fileLinkField">
+                        <label>Link file:</label>
+                        <input type="text" id="fileLink" class="form-control" placeholder="https://example.com/file.zip">
+                    </div>
+                    
+                    <div class="form-group" id="usernameField" style="display: none;">
+                        <label>Username:</label>
+                        <input type="text" id="accountUsername" class="form-control">
+                    </div>
+                    
+                    <div class="form-group" id="passwordField" style="display: none;">
+                        <label>Password:</label>
+                        <input type="text" id="accountPassword" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Mô tả:</label>
+                        <textarea id="productDescription" class="form-control" rows="3"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-block">Thêm sản phẩm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add QR Modal -->
+    <div class="modal" id="addQRModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-qrcode"></i> Thêm QR Banking</h3>
+                <button class="modal-close" onclick="closeAddQRModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="return addQRCode(event)">
+                    <div class="form-group">
+                        <label>Tên ngân hàng:</label>
+                        <input type="text" id="qrBankName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Số tài khoản:</label>
+                        <input type="text" id="qrAccountNumber" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Chủ tài khoản:</label>
+                        <input type="text" id="qrAccountName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tải lên ảnh QR:</label>
+                        <div class="file-upload" id="qrUploadArea">
+                            <input type="file" id="qrFileInput" accept="image/*" onchange="previewQRImage(event)">
+                            <label for="qrFileInput">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click để tải ảnh QR lên</p>
+                                <p style="font-size: 12px; color: #666;">Hỗ trợ: JPG, PNG, GIF (tối đa 2MB)</p>
+                            </label>
+                        </div>
+                        <div id="qrPreview" style="margin-top: 10px; display: none;">
+                            <img id="qrPreviewImage" src="" style="max-width: 150px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Hoặc nhập link ảnh QR:</label>
+                        <input type="text" id="qrImage" class="form-control" placeholder="https://example.com/qr.jpg">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-block">Thêm QR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript Application -->
+    <script>
+        // Database simulation using localStorage
+        class Database {
+            constructor() {
+                this.initDatabase();
+            }
+            
+            initDatabase() {
+                // Users
+                if (!localStorage.getItem('users')) {
+                    const users = [
+                        {
+                            id: 1,
+                            username: 'admin',
+                            password: btoa('Admin@123'),
+                            birthdate: '1990-01-01',
+                            balance: 0,
+                            diamonds: 0,
+                            avatar: 'default.jpg',
+                            created_at: new Date().toISOString(),
+                            is_admin: true
+                        }
+                    ];
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                // Products File
+                if (!localStorage.getItem('products_file')) {
+                    const products = [
+                        {id: 1, name: 'File Premium 1', price: 20000, description: 'File chất lượng cao', file_link: 'https://example.com/file1.zip'},
+                        {id: 2, name: 'File Premium 2', price: 50000, description: 'File đặc biệt', file_link: 'https://example.com/file2.zip'},
+                        {id: 3, name: 'File VIP 1', price: 100000, description: 'File VIP cao cấp', file_link: 'https://example.com/file3.zip'},
+                        {id: 4, name: 'File VIP 2', price: 200000, description: 'File cực phẩm', file_link: 'https://example.com/file4.zip'},
+                        {id: 5, name: 'File Supreme', price: 500000, description: 'File cao nhất', file_link: 'https://example.com/file5.zip'}
+                    ];
+                    localStorage.setItem('products_file', JSON.stringify(products));
+                }
+                
+                // Products Account
+                if (!localStorage.getItem('products_account')) {
+                    const accounts = [
+                        {id: 1, name: 'Account Clone 1', username: 'userclone1', password: 'pass123', description: 'Acc clone chất lượng', sold: false, sold_to: null},
+                        {id: 2, name: 'Account Clone 2', username: 'userclone2', password: 'pass456', description: 'Acc clone premium', sold: false, sold_to: null},
+                        {id: 3, name: 'Account Clone 3', username: 'userclone3', password: 'pass789', description: 'Acc clone vip', sold: false, sold_to: null},
+                        {id: 4, name: 'Account Clone 4', username: 'userclone4', password: 'pass000', description: 'Acc clone đặc biệt', sold: false, sold_to: null},
+                        {id: 5, name: 'Account Clone 5', username: 'userclone5', password: 'pass111', description: 'Acc clone 5', sold: false, sold_to: null},
+                        {id: 6, name: 'Account Clone 6', username: 'userclone6', password: 'pass222', description: 'Acc clone 6', sold: false, sold_to: null},
+                        {id: 7, name: 'Account Clone 7', username: 'userclone7', password: 'pass333', description: 'Acc clone 7', sold: false, sold_to: null},
+                        {id: 8, name: 'Account Clone 8', username: 'userclone8', password: 'pass444', description: 'Acc clone 8', sold: false, sold_to: null},
+                        {id: 9, name: 'Account Clone 9', username: 'userclone9', password: 'pass555', description: 'Acc clone 9', sold: false, sold_to: null},
+                        {id: 10, name: 'Account Clone 10', username: 'userclone10', password: 'pass666', description: 'Acc clone 10', sold: false, sold_to: null}
+                    ];
+                    localStorage.setItem('products_account', JSON.stringify(accounts));
+                }
+                
+                // Messages
+                if (!localStorage.getItem('messages')) {
+                    localStorage.setItem('messages', JSON.stringify([]));
+                }
+                
+                // Purchase History
+                if (!localStorage.getItem('purchase_history')) {
+                    localStorage.setItem('purchase_history', JSON.stringify([]));
+                }
+                
+                // Deposit History
+                if (!localStorage.getItem('deposit_history')) {
+                    localStorage.setItem('deposit_history', JSON.stringify([]));
+                }
+                
+                // Spin History
+                if (!localStorage.getItem('spin_history')) {
+                    localStorage.setItem('spin_history', JSON.stringify([]));
+                }
+                
+                // Wheel Settings
+                if (!localStorage.getItem('wheel_settings')) {
+                    const settings = {
+                        min_diamond: 20,
+                        max_diamond: 500,
+                        probabilities: [20, 30, 25, 15, 10]
+                    };
+                    localStorage.setItem('wheel_settings', JSON.stringify(settings));
+                }
+                
+                // Bank QR
+                if (!localStorage.getItem('bank_qr')) {
+                    localStorage.setItem('bank_qr', JSON.stringify([]));
+                }
+                
+                // Wheel Spin Count
+                if (!localStorage.getItem('wheel_spin_count')) {
+                    localStorage.setItem('wheel_spin_count', JSON.stringify({}));
+                }
+                
+                // Withdraw History
+                if (!localStorage.getItem('withdraw_history')) {
+                    localStorage.setItem('withdraw_history', JSON.stringify([]));
+                }
+            }
+            
+            // User methods
+            getUsers() {
+                return JSON.parse(localStorage.getItem('users')) || [];
+            }
+            
+            getUserById(id) {
+                const users = this.getUsers();
+                return users.find(u => u.id == id);
+            }
+            
+            getUserByUsername(username) {
+                const users = this.getUsers();
+                return users.find(u => u.username === username);
+            }
+            
+            addUser(user) {
+                const users = this.getUsers();
+                const newUser = {
+                    id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+                    ...user,
+                    balance: 0,
+                    diamonds: 0,
+                    avatar: 'default.jpg',
+                    created_at: new Date().toISOString(),
+                    is_admin: false
+                };
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Send welcome message
+                this.addMessage({
+                    user_id: newUser.id,
+                    type: 'welcome',
+                    title: 'Chào mừng đến với ShopFile24h!',
+                    content: 'Cảm ơn bạn đã đăng ký tài khoản. Chúc bạn có trải nghiệm tốt nhất!'
+                });
+                
+                return newUser;
+            }
+            
+            updateUser(id, updates) {
+                const users = this.getUsers();
+                const index = users.findIndex(u => u.id == id);
+                if (index !== -1) {
+                    users[index] = {...users[index], ...updates};
+                    localStorage.setItem('users', JSON.stringify(users));
+                    return users[index];
+                }
+                return null;
+            }
+            
+            // Product methods
+            getProductsFile() {
+                return JSON.parse(localStorage.getItem('products_file')) || [];
+            }
+            
+            getProductsAccount() {
+                return JSON.parse(localStorage.getItem('products_account')) || [];
+            }
+            
+            getProductFile(id) {
+                const products = this.getProductsFile();
+                return products.find(p => p.id == id);
+            }
+            
+            getProductAccount(id) {
+                const products = this.getProductsAccount();
+                return products.find(p => p.id == id);
+            }
+            
+            addProductFile(product) {
+                const products = this.getProductsFile();
+                const newProduct = {
+                    id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+                    ...product
+                };
+                products.push(newProduct);
+                localStorage.setItem('products_file', JSON.stringify(products));
+                return newProduct;
+            }
+            
+            addProductAccount(account) {
+                const accounts = this.getProductsAccount();
+                const newAccount = {
+                    id: accounts.length > 0 ? Math.max(...accounts.map(a => a.id)) + 1 : 1,
+                    ...account,
+                    sold: false,
+                    sold_to: null
+                };
+                accounts.push(newAccount);
+                localStorage.setItem('products_account', JSON.stringify(accounts));
+                return newAccount;
+            }
+            
+            updateProductAccount(id, updates) {
+                const accounts = this.getProductsAccount();
+                const index = accounts.findIndex(a => a.id == id);
+                if (index !== -1) {
+                    accounts[index] = {...accounts[index], ...updates};
+                    localStorage.setItem('products_account', JSON.stringify(accounts));
+                    return accounts[index];
+                }
+                return null;
+            }
+            
+            // Message methods
+            getMessages(userId) {
+                const messages = JSON.parse(localStorage.getItem('messages')) || [];
+                return messages.filter(m => m.user_id == userId);
+            }
+            
+            addMessage(message) {
+                const messages = JSON.parse(localStorage.getItem('messages')) || [];
+                const newMessage = {
+                    id: messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : 1,
+                    ...message,
+                    created_at: new Date().toISOString(),
+                    is_read: false
+                };
+                messages.push(newMessage);
+                localStorage.setItem('messages', JSON.stringify(messages));
+                return newMessage;
+            }
+            
+            markMessageAsRead(id) {
+                const messages = JSON.parse(localStorage.getItem('messages')) || [];
+                const index = messages.findIndex(m => m.id == id);
+                if (index !== -1) {
+                    messages[index].is_read = true;
+                    localStorage.setItem('messages', JSON.stringify(messages));
+                }
+            }
+            
+            // Purchase methods
+            addPurchase(purchase) {
+                const purchases = JSON.parse(localStorage.getItem('purchase_history')) || [];
+                const newPurchase = {
+                    id: purchases.length > 0 ? Math.max(...purchases.map(p => p.id)) + 1 : 1,
+                    ...purchase,
+                    purchase_date: new Date().toISOString()
+                };
+                purchases.push(newPurchase);
+                localStorage.setItem('purchase_history', JSON.stringify(purchases));
+                return newPurchase;
+            }
+            
+            getPurchases(userId) {
+                const purchases = JSON.parse(localStorage.getItem('purchase_history')) || [];
+                return purchases.filter(p => p.user_id == userId);
+            }
+            
+            // Deposit methods
+            addDeposit(deposit) {
+                const deposits = JSON.parse(localStorage.getItem('deposit_history')) || [];
+                const newDeposit = {
+                    id: deposits.length > 0 ? Math.max(...deposits.map(d => d.id)) + 1 : 1,
+                    ...deposit,
+                    created_at: new Date().toISOString(),
+                    status: 'pending'
+                };
+                deposits.push(newDeposit);
+                localStorage.setItem('deposit_history', JSON.stringify(deposits));
+                return newDeposit;
+            }
+            
+            getDeposits(userId = null) {
+                const deposits = JSON.parse(localStorage.getItem('deposit_history')) || [];
+                if (userId) {
+                    return deposits.filter(d => d.user_id == userId);
+                }
+                return deposits;
+            }
+            
+            updateDepositStatus(id, status) {
+                const deposits = JSON.parse(localStorage.getItem('deposit_history')) || [];
+                const index = deposits.findIndex(d => d.id == id);
+                if (index !== -1) {
+                    deposits[index].status = status;
+                    if (status === 'approved') {
+                        const user = this.getUserById(deposits[index].user_id);
+                        this.updateUser(user.id, {
+                            balance: user.balance + deposits[index].amount
+                        });
+                        
+                        // Reset wheel spin count for this user when they deposit
+                        this.resetUserSpinCount(deposits[index].user_id);
+                    }
+                    localStorage.setItem('deposit_history', JSON.stringify(deposits));
+                    return deposits[index];
+                }
+                return null;
+            }
+            
+            // Spin methods
+            addSpin(spin) {
+                const spins = JSON.parse(localStorage.getItem('spin_history')) || [];
+                const newSpin = {
+                    id: spins.length > 0 ? Math.max(...spins.map(s => s.id)) + 1 : 1,
+                    ...spin,
+                    spin_date: new Date().toISOString()
+                };
+                spins.push(newSpin);
+                localStorage.setItem('spin_history', JSON.stringify(spins));
+                return newSpin;
+            }
+            
+            getSpins(userId) {
+                const spins = JSON.parse(localStorage.getItem('spin_history')) || [];
+                return spins.filter(s => s.user_id == userId);
+            }
+            
+            // Wheel settings
+            getWheelSettings() {
+                return JSON.parse(localStorage.getItem('wheel_settings')) || {};
+            }
+            
+            updateWheelSettings(settings) {
+                localStorage.setItem('wheel_settings', JSON.stringify(settings));
+            }
+            
+            // Wheel spin count management
+            getWheelSpinCount() {
+                return JSON.parse(localStorage.getItem('wheel_spin_count')) || {};
+            }
+            
+            getUserSpinCount(userId) {
+                const counts = this.getWheelSpinCount();
+                return counts[userId] || 0;
+            }
+            
+            incrementUserSpinCount(userId) {
+                const counts = this.getWheelSpinCount();
+                if (!counts[userId]) {
+                    counts[userId] = 0;
+                }
+                counts[userId]++;
+                localStorage.setItem('wheel_spin_count', JSON.stringify(counts));
+                return counts[userId];
+            }
+            
+            resetUserSpinCount(userId) {
+                const counts = this.getWheelSpinCount();
+                counts[userId] = 0;
+                localStorage.setItem('wheel_spin_count', JSON.stringify(counts));
+                return 0;
+            }
+            
+            // Bank QR methods
+            getBankQR() {
+                return JSON.parse(localStorage.getItem('bank_qr')) || [];
+            }
+            
+            addBankQR(qr) {
+                const qrs = this.getBankQR();
+                const newQR = {
+                    id: qrs.length > 0 ? Math.max(...qrs.map(q => q.id)) + 1 : 1,
+                    ...qr,
+                    created_at: new Date().toISOString(),
+                    is_active: true
+                };
+                qrs.push(newQR);
+                localStorage.setItem('bank_qr', JSON.stringify(qrs));
+                return newQR;
+            }
+            
+            updateBankQR(id, updates) {
+                const qrs = this.getBankQR();
+                const index = qrs.findIndex(q => q.id == id);
+                if (index !== -1) {
+                    qrs[index] = {...qrs[index], ...updates};
+                    localStorage.setItem('bank_qr', JSON.stringify(qrs));
+                    return qrs[index];
+                }
+                return null;
+            }
+            
+            getActiveQR() {
+                const qrs = this.getBankQR();
+                return qrs.find(q => q.is_active) || null;
+            }
+            
+            // Withdraw methods
+            addWithdraw(withdraw) {
+                const withdraws = JSON.parse(localStorage.getItem('withdraw_history')) || [];
+                const newWithdraw = {
+                    id: withdraws.length > 0 ? Math.max(...withdraws.map(w => w.id)) + 1 : 1,
+                    ...withdraw,
+                    created_at: new Date().toISOString(),
+                    status: 'pending'
+                };
+                withdraws.push(newWithdraw);
+                localStorage.setItem('withdraw_history', JSON.stringify(withdraws));
+                return newWithdraw;
+            }
+            
+            getWithdraws(userId = null) {
+                const withdraws = JSON.parse(localStorage.getItem('withdraw_history')) || [];
+                if (userId) {
+                    return withdraws.filter(w => w.user_id == userId);
+                }
+                return withdraws;
+            }
+            
+            updateWithdrawStatus(id, status) {
+                const withdraws = JSON.parse(localStorage.getItem('withdraw_history')) || [];
+                const index = withdraws.findIndex(w => w.id == id);
+                if (index !== -1) {
+                    withdraws[index].status = status;
+                    
+                    // Nếu từ chối, hoàn lại KC cho user
+                    if (status === 'rejected') {
+                        const user = this.getUserById(withdraws[index].user_id);
+                        this.updateUser(user.id, {
+                            diamonds: user.diamonds + withdraws[index].amount
+                        });
+                    }
+                    
+                    localStorage.setItem('withdraw_history', JSON.stringify(withdraws));
+                    return withdraws[index];
+                }
+                return null;
+            }
+        }
+
+        // Initialize database
+        const db = new Database();
+        
+        // Session management
+        class Session {
+            constructor() {
+                this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+                this.isAdmin = JSON.parse(localStorage.getItem('isAdmin')) || false;
+            }
+            
+            login(user) {
+                this.currentUser = user;
+                this.isAdmin = user.is_admin || false;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                localStorage.setItem('isAdmin', JSON.stringify(this.isAdmin));
+            }
+            
+            logout() {
+                this.currentUser = null;
+                this.isAdmin = false;
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('isAdmin');
+            }
+            
+            isLoggedIn() {
+                return this.currentUser !== null;
+            }
+            
+            getCurrentUser() {
+                return this.currentUser;
+            }
+            
+            updateUser(updates) {
+                if (this.currentUser) {
+                    this.currentUser = {...this.currentUser, ...updates};
+                    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                    
+                    // Update in database
+                    db.updateUser(this.currentUser.id, updates);
+                }
+            }
+        }
+
+        const session = new Session();
+        
+        // Application State
+        let currentUser = null;
+        let wheelSpinning = false;
+        let qrImageBase64 = null;
+        
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+        });
+        
+        function initApp() {
+            // Check if user is logged in
+            if (session.isLoggedIn()) {
+                currentUser = session.getCurrentUser();
+                if (currentUser.is_admin) {
+                    showAdminDashboard();
+                    loadAdminData();
+                } else {
+                    showUserDashboard();
+                    loadUserData();
+                }
+            } else {
+                showLogin();
+            }
+            
+            // Set default birthdate for register
+            document.getElementById('regBirthdate').value = '2000-01-01';
+            
+            // Initialize wheel
+            initWheel();
+        }
+        
+        // Authentication Functions
+        function showLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('authPage').style.display = 'block';
+            document.getElementById('userDashboard').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'none';
+        }
+        
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('authPage').style.display = 'block';
+            document.getElementById('userDashboard').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'none';
+        }
+        
+        function login(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Find user
+            const user = db.getUserByUsername(username);
+            
+            if (!user) {
+                showError('loginError', 'Tên đăng nhập không tồn tại!');
+                return false;
+            }
+            
+            // Check password
+            if (atob(user.password) !== password) {
+                showError('loginError', 'Sai mật khẩu!');
+                return false;
+            }
+            
+            // Login successful
+            session.login(user);
+            currentUser = user;
+            
+            if (user.is_admin) {
+                showAdminDashboard();
+                loadAdminData();
+            } else {
+                showUserDashboard();
+                loadUserData();
+            }
+            
+            return false;
+        }
+        
+        function register(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const birthdate = document.getElementById('regBirthdate').value;
+            
+            // Validation
+            if (password !== confirmPassword) {
+                showError('registerError', 'Mật khẩu xác nhận không khớp!');
+                return false;
+            }
+            
+            if (password.length < 6) {
+                showError('registerError', 'Mật khẩu phải có ít nhất 6 ký tự!');
+                return false;
+            }
+            
+            // Check if username exists
+            if (db.getUserByUsername(username)) {
+                showError('registerError', 'Tên đăng nhập đã tồn tại!');
+                return false;
+            }
+            
+            // Create user
+            const newUser = db.addUser({
+                username: username,
+                password: btoa(password),
+                birthdate: birthdate
+            });
+            
+            // Show success message
+            document.getElementById('registerError').style.display = 'none';
+            document.getElementById('registerSuccess').style.display = 'block';
+            document.getElementById('registerSuccess').textContent = 'Đăng ký thành công! Đang chuyển hướng...';
+            
+            // Redirect to login after 2 seconds
+            setTimeout(() => {
+                document.getElementById('loginUsername').value = username;
+                showLogin();
+                document.getElementById('registerSuccess').style.display = 'none';
+            }, 2000);
+            
+            return false;
+        }
+        
+        function adminLogout() {
+            session.logout();
+            currentUser = null;
+            showLogin();
+            showNotification('Đã đăng xuất admin!', 'success');
+        }
+        
+        // Dashboard Functions
+        function showUserDashboard() {
+            document.getElementById('authPage').style.display = 'none';
+            document.getElementById('userDashboard').style.display = 'block';
+            document.getElementById('adminDashboard').style.display = 'none';
+        }
+        
+        function showAdminDashboard() {
+            document.getElementById('authPage').style.display = 'none';
+            document.getElementById('userDashboard').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'block';
+        }
+        
+        function loadUserData() {
+            if (!currentUser) return;
+            
+            // Update user info
+            document.getElementById('userBalance').textContent = formatMoney(currentUser.balance);
+            document.getElementById('userDiamonds').textContent = currentUser.diamonds;
+            document.getElementById('sidebarUsername').textContent = currentUser.username;
+            document.getElementById('sidebarBirthdate').textContent = formatDate(currentUser.birthdate);
+            
+            // Load products
+            loadProducts();
+            
+            // Load unread messages count
+            updateUnreadCount();
+            
+            // Check wheel eligibility
+            checkWheelEligibility();
+        }
+        
+        function loadProducts() {
+            // Load files
+            const files = db.getProductsFile();
+            const filesGrid = document.getElementById('filesGrid');
+            filesGrid.innerHTML = '';
+            
+            files.forEach(file => {
+                const canBuy = currentUser.balance >= file.price;
+                filesGrid.innerHTML += `
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="product-price">${formatMoney(file.price)}đ</div>
+                            <div class="product-title">${file.name}</div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-description">${file.description}</p>
+                            <button class="btn btn-block" onclick="buyProduct(${file.id}, 'file')" ${!canBuy ? 'disabled' : ''}>
+                                <i class="fas fa-shopping-cart"></i> MUA NGAY
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Load accounts
+            const accounts = db.getProductsAccount();
+            const accountsGrid = document.getElementById('accountsGrid');
+            accountsGrid.innerHTML = '';
+            
+            accounts.forEach(account => {
+                const canBuy = currentUser.balance >= 5000 && !account.sold;
+                const soldBadge = account.sold ? '<div class="product-sold">ĐÃ BÁN</div>' : '';
+                
+                accountsGrid.innerHTML += `
+                    <div class="product-card" style="position: relative;">
+                        ${soldBadge}
+                        <div class="product-header">
+                            <div class="product-price">5.000đ</div>
+                            <div class="product-title">${account.name}</div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-description">${account.description}</p>
+                            <button class="btn btn-block" onclick="buyProduct(${account.id}, 'account')" ${!canBuy ? 'disabled' : ''}>
+                                <i class="fas fa-user-circle"></i> ${account.sold ? 'ĐÃ BÁN' : 'MUA NGAY'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        function updateUnreadCount() {
+            if (!currentUser) return;
+            
+            const messages = db.getMessages(currentUser.id);
+            const unreadCount = messages.filter(m => !m.is_read).length;
+            
+            const badge = document.getElementById('unreadBadge');
+            const sidebarBadge = document.getElementById('sidebarUnreadBadge');
+            
+            if (unreadCount > 0) {
+                badge.style.display = 'flex';
+                badge.textContent = unreadCount;
+                sidebarBadge.style.display = 'inline';
+                sidebarBadge.textContent = unreadCount;
+            } else {
+                badge.style.display = 'none';
+                sidebarBadge.style.display = 'none';
+            }
+        }
+        
+        // Purchase Functions
+        function buyProduct(productId, type) {
+            if (!currentUser) return;
+            
+            let product, price, details;
+            
+            if (type === 'file') {
+                product = db.getProductFile(productId);
+                price = product.price;
+                
+                // Kiểm tra số dư CHÍNH XÁC
+                if (currentUser.balance < price) {
+                    showNotification('Số dư không đủ!', 'error');
+                    return;
+                }
+                
+                // Tính số dư mới
+                const newBalance = currentUser.balance - price;
+                
+                // Cập nhật ngay lập tức trong session và database
+                db.updateUser(currentUser.id, { balance: newBalance });
+                session.updateUser({ balance: newBalance });
+                
+                // Cập nhật currentUser
+                currentUser = session.getCurrentUser();
+                
+                // Add to purchase history
+                db.addPurchase({
+                    user_id: currentUser.id,
+                    product_type: 'file',
+                    product_id: productId,
+                    price: price,
+                    details: JSON.stringify({ file_link: product.file_link })
+                });
+                
+                details = `<p>Link file: <a href="${product.file_link}" target="_blank">${product.file_link}</a></p>`;
+                
+                showSuccessModal('Mua file thành công!', 
+                    `<p>Bạn đã mua thành công <strong>${product.name}</strong> với giá ${formatMoney(price)}đ</p>
+                     ${details}
+                     <p>Số dư còn lại: <strong>${formatMoney(newBalance)}đ</strong></p>`);
+                
+            } else if (type === 'account') {
+                product = db.getProductAccount(productId);
+                price = 5000;
+                
+                // Check if account is sold
+                if (product.sold) {
+                    showNotification('Account này đã được bán!', 'error');
+                    return;
+                }
+                
+                // Kiểm tra số dư CHÍNH XÁC
+                if (currentUser.balance < price) {
+                    showNotification('Số dư không đủ!', 'error');
+                    return;
+                }
+                
+                // Tính số dư mới
+                const newBalance = currentUser.balance - price;
+                
+                // Cập nhật ngay lập tức trong session và database
+                db.updateUser(currentUser.id, { balance: newBalance });
+                session.updateUser({ balance: newBalance });
+                
+                // Cập nhật currentUser
+                currentUser = session.getCurrentUser();
+                
+                // Mark account as sold
+                db.updateProductAccount(productId, { 
+                    sold: true, 
+                    sold_to: currentUser.id 
+                });
+                
+                // Add to purchase history
+                db.addPurchase({
+                    user_id: currentUser.id,
+                    product_type: 'account',
+                    product_id: productId,
+                    price: price,
+                    details: JSON.stringify({ 
+                        username: product.username, 
+                        password: product.password 
+                    })
+                });
+                
+                details = `<p>Username: <strong>${product.username}</strong></p>
+                          <p>Password: <strong>${product.password}</strong></p>`;
+                
+                showSuccessModal('Mua account thành công!', 
+                    `<p>Bạn đã mua thành công <strong>${product.name}</strong> với giá 5.000đ</p>
+                     ${details}
+                     <p>Số dư còn lại: <strong>${formatMoney(newBalance)}đ</strong></p>
+                     <p><em>Lưu ý: Mỗi account chỉ được mua bởi một người duy nhất!</em></p>`);
+            }
+            
+            // Cập nhật UI NGAY LẬP TỨC
+            document.getElementById('userBalance').textContent = formatMoney(currentUser.balance);
+            
+            // Cập nhật trong sidebar nếu có
+            if (document.getElementById('profileBalance')) {
+                document.getElementById('profileBalance').textContent = formatMoney(currentUser.balance);
+            }
+            
+            // Tải lại danh sách sản phẩm để cập nhật nút bấm
+            loadProducts();
+            
+            // Play purchase sound
+            playNotificationSound();
+        }
+        
+        // Deposit Functions
+        function openDepositModal() {
+            document.getElementById('depositModal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+            
+            // Load bank QR if available
+            loadBankQR();
+        }
+        
+        function closeDepositModal() {
+            document.getElementById('depositModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+        
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+        
+        function depositCard(e) {
+            e.preventDefault();
+            
+            if (!currentUser) return false;
+            
+            const telecom = document.getElementById('cardTelecom').value;
+            const denomination = parseInt(document.getElementById('cardDenomination').value);
+            const serial = document.getElementById('cardSerial').value;
+            const pin = document.getElementById('cardPin').value;
+            
+            // Add deposit
+            db.addDeposit({
+                user_id: currentUser.id,
+                type: 'card',
+                telecom: telecom,
+                amount: denomination,
+                serial: serial,
+                pin: pin
+            });
+            
+            showSuccessModal('Nạp thẻ thành công!',
+                `<p>Thẻ ${telecom} mệnh giá ${formatMoney(denomination)}đ đã được gửi đến admin.</p>
+                 <p>Vui lòng chờ admin xác nhận trong vòng 5-10 phút.</p>
+                 <p>Seri: <strong>${serial}</strong></p>
+                 <p>Mã thẻ: <strong>${pin}</strong></p>`);
+            
+            closeDepositModal();
+            return false;
+        }
+        
+        function depositBank(e) {
+            e.preventDefault();
+            
+            if (!currentUser) return false;
+            
+            const bankName = document.getElementById('bankName').value;
+            const accountNumber = document.getElementById('bankAccount').value;
+            const amount = parseInt(document.getElementById('bankAmount').value);
+            const transactionCode = document.getElementById('bankTransactionCode').value;
+            
+            // Add deposit
+            db.addDeposit({
+                user_id: currentUser.id,
+                type: 'bank',
+                bank_name: bankName,
+                account_number: accountNumber,
+                amount: amount,
+                transaction_code: transactionCode
+            });
+            
+            showSuccessModal('Gửi yêu cầu thành công!',
+                `<p>Yêu cầu nạp ${formatMoney(amount)}đ qua ${bankName} đã được gửi đến admin.</p>
+                 <p>Vui lòng chờ admin xác nhận trong vòng 5-10 phút.</p>
+                 <p>Mã giao dịch: <strong>${transactionCode}</strong></p>`);
+            
+            closeDepositModal();
+            return false;
+        }
+        
+        function generateRandomCode() {
+            const prefixes = ['bunbohuy', 'trasua', 'thecao', 'shopfile', 'naptien'];
+            const suffixes = ['12', '09', '77', '24h', '2024'];
+            const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+            const randomNum = Math.floor(Math.random() * 100);
+            
+            const code = randomPrefix + randomSuffix + randomNum;
+            document.getElementById('bankTransactionCode').value = code;
+        }
+        
+        function loadBankQR() {
+            const qr = db.getActiveQR();
+            const qrContainer = document.getElementById('bankQRCode');
+            
+            if (qr) {
+                if (qr.qr_image && qr.qr_image.startsWith('data:image')) {
+                    // QR code là base64
+                    qrContainer.innerHTML = `
+                        <h4>Quét mã QR để nạp tiền</h4>
+                        <img src="${qr.qr_image}" alt="QR Code" style="max-width: 200px; border: 1px solid #ddd; padding: 10px; border-radius: 10px;">
+                        <p><strong>Ngân hàng:</strong> ${qr.bank_name}</p>
+                        <p><strong>Số TK:</strong> ${qr.account_number}</p>
+                        <p><strong>Chủ TK:</strong> ${qr.account_name}</p>
+                    `;
+                } else if (qr.qr_image) {
+                    // QR code là link
+                    qrContainer.innerHTML = `
+                        <h4>Quét mã QR để nạp tiền</h4>
+                        <img src="${qr.qr_image}" alt="QR Code" style="max-width: 200px; border: 1px solid #ddd; padding: 10px; border-radius: 10px;">
+                        <p><strong>Ngân hàng:</strong> ${qr.bank_name}</p>
+                        <p><strong>Số TK:</strong> ${qr.account_number}</p>
+                        <p><strong>Chủ TK:</strong> ${qr.account_name}</p>
+                    `;
+                } else {
+                    qrContainer.innerHTML = `
+                        <h4>Quét mã QR để nạp tiền</h4>
+                        <div style="background: #e0e0e0; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <p style="color: #333; font-weight: bold;">QR CODE: ${qr.bank_name}</p>
+                            <p style="color: #666; font-size: 14px;">Số TK: ${qr.account_number}</p>
+                            <p style="color: #666; font-size: 14px;">Chủ TK: ${qr.account_name}</p>
+                        </div>
+                    `;
+                }
+            } else {
+                qrContainer.innerHTML = '<p>Chưa có QR code nào được thiết lập</p>';
+            }
+        }
+        
+        // Wheel Functions
+        function initWheel() {
+            const wheel = document.getElementById('wheel');
+            const colors = ['#FF416C', '#FF4B2B', '#FFC107', '#4CAF50', '#2196F3'];
+            const prizes = [20, 50, 100, 200, 500];
+            
+            wheel.innerHTML = '';
+            
+            for (let i = 0; i < 5; i++) {
+                const item = document.createElement('div');
+                item.className = 'wheel-item';
+                item.style.backgroundColor = colors[i];
+                item.style.transform = `rotate(${i * 72}deg)`;
+                item.innerHTML = `<div style="transform: rotate(36deg);">${prizes[i]} KC</div>`;
+                wheel.appendChild(item);
+            }
+        }
+        
+        function checkWheelEligibility() {
+            if (!currentUser) return;
+            
+            const deposits = db.getDeposits(currentUser.id);
+            const totalDeposited = deposits
+                .filter(d => d.status === 'approved')
+                .reduce((sum, d) => sum + d.amount, 0);
+            
+            const spinCount = db.getUserSpinCount(currentUser.id);
+            const allowedSpins = Math.floor(totalDeposited / 100000);
+            const remainingSpins = allowedSpins - spinCount;
+            
+            const spinBtn = document.getElementById('spinBtn');
+            const wheelMessage = document.getElementById('wheelMessage');
+            
+            if (remainingSpins > 0) {
+                spinBtn.disabled = false;
+                wheelMessage.innerHTML = 
+                    `Bạn còn <strong>${remainingSpins}</strong> lượt quay (Tổng nạp: ${formatMoney(totalDeposited)}đ)`;
+            } else {
+                spinBtn.disabled = true;
+                const needed = 100000 - (totalDeposited % 100000);
+                if (needed === 100000) {
+                    wheelMessage.innerHTML = 
+                        `Bạn đã hết lượt quay. Nạp <strong>100.000đ</strong> để có lượt quay mới!`;
+                } else {
+                    wheelMessage.innerHTML = 
+                        `Cần nạp thêm <strong>${formatMoney(needed)}đ</strong> để có lượt quay mới!`;
+                }
+            }
+        }
+        
+        function spinWheel() {
+            if (wheelSpinning) return;
+            if (!currentUser) return;
+            
+            // Kiểm tra lại điều kiện trước khi quay
+            const deposits = db.getDeposits(currentUser.id);
+            const totalDeposited = deposits
+                .filter(d => d.status === 'approved')
+                .reduce((sum, d) => sum + d.amount, 0);
+            
+            const spinCount = db.getUserSpinCount(currentUser.id);
+            const allowedSpins = Math.floor(totalDeposited / 100000);
+            
+            if (spinCount >= allowedSpins) {
+                showNotification('Bạn đã hết lượt quay! Vui lòng nạp thêm tiền.', 'error');
+                return;
+            }
+            
+            wheelSpinning = true;
+            const wheel = document.getElementById('wheel');
+            const spinBtn = document.getElementById('spinBtn');
+            
+            spinBtn.disabled = true;
+            
+            // Get wheel settings
+            const settings = db.getWheelSettings();
+            const prizes = [20, 50, 100, 200, 500];
+            const probabilities = settings.probabilities || [20, 30, 25, 15, 10];
+            
+            // Calculate winning prize
+            const total = probabilities.reduce((a, b) => a + b, 0);
+            let random = Math.random() * total;
+            let wonIndex = 0;
+            
+            for (let i = 0; i < probabilities.length; i++) {
+                random -= probabilities[i];
+                if (random <= 0) {
+                    wonIndex = i;
+                    break;
+                }
+            }
+            
+            const wonPrize = prizes[wonIndex];
+            
+            // Calculate spin degree (5 full rotations + offset to winning segment)
+            const baseDegrees = 360 * 5;
+            const segmentDegree = 72;
+            const offset = (wonIndex * segmentDegree) + Math.random() * segmentDegree;
+            const totalDegrees = baseDegrees + offset;
+            
+            // Animate wheel
+            wheel.style.transform = `rotate(${totalDegrees}deg)`;
+            
+            // After animation completes
+            setTimeout(() => {
+                // Update user diamonds
+                const newDiamonds = currentUser.diamonds + wonPrize;
+                db.updateUser(currentUser.id, { diamonds: newDiamonds });
+                session.updateUser({ diamonds: newDiamonds });
+                
+                // Increment spin count
+                db.incrementUserSpinCount(currentUser.id);
+                
+                // Add spin history
+                db.addSpin({
+                    user_id: currentUser.id,
+                    diamonds_won: wonPrize
+                });
+                
+                // Show success modal
+                showSuccessModal('Chúc mừng!', 
+                    `<p>Bạn đã quay được <strong>${wonPrize} Kim Cương</strong>!</p>
+                     <p>Tổng kim cương: <strong>${newDiamonds} KC</strong></p>
+                     <p>Lượt quay còn lại: <strong>${Math.floor(totalDeposited / 100000) - (spinCount + 1)}</strong></p>
+                     <p>Mỗi 100.000đ nạp được quay 1 lần</p>`);
+                
+                // Update UI
+                document.getElementById('userDiamonds').textContent = newDiamonds;
+                checkWheelEligibility();
+                
+                // Reset wheel after delay
+                setTimeout(() => {
+                    wheel.style.transition = 'none';
+                    wheel.style.transform = 'rotate(0deg)';
+                    
+                    setTimeout(() => {
+                        wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
+                        wheelSpinning = false;
+                        spinBtn.disabled = false;
+                    }, 100);
+                }, 3000);
+                
+            }, 4000);
+        }
+        
+        // Sidebar Functions
+        function openMenu() {
+            document.getElementById('sidebar').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+        
+        function closeMenu() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+            hideAllSections();
+        }
+        
+        function hideAllSections() {
+            const sections = ['profileDetails', 'messagesSection', 'purchaseHistory', 'depositHistory', 'spinHistory', 'withdrawSection'];
+            sections.forEach(section => {
+                document.getElementById(section).style.display = 'none';
+            });
+        }
+        
+        function showProfile() {
+            hideAllSections();
+            const section = document.getElementById('profileDetails');
+            section.style.display = 'block';
+            
+            document.getElementById('profileUsername').textContent = currentUser.username;
+            document.getElementById('profileBirthdate').textContent = formatDate(currentUser.birthdate);
+            document.getElementById('profileBalance').textContent = formatMoney(currentUser.balance);
+            document.getElementById('profileDiamonds').textContent = currentUser.diamonds;
+            document.getElementById('profileJoinDate').textContent = formatDateTime(currentUser.created_at);
+        }
+        
+        function showMessages() {
+            hideAllSections();
+            const section = document.getElementById('messagesSection');
+            section.style.display = 'block';
+            
+            const messages = db.getMessages(currentUser.id);
+            const messagesList = document.getElementById('messagesList');
+            messagesList.innerHTML = '';
+            
+            if (messages.length === 0) {
+                messagesList.innerHTML = '<p>Không có tin nhắn nào</p>';
+            } else {
+                messages.forEach(msg => {
+                    messagesList.innerHTML += `
+                        <div style="background: #f5f5f5; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+                            <p><strong>${msg.title}</strong></p>
+                            <p>${msg.content}</p>
+                            <p style="color: #666; font-size: 12px;">${formatDateTime(msg.created_at)}</p>
+                        </div>
+                    `;
+                    
+                    // Mark as read
+                    if (!msg.is_read) {
+                        db.markMessageAsRead(msg.id);
+                    }
+                });
+                
+                // Update unread count
+                updateUnreadCount();
+            }
+        }
+        
+        function showPurchaseHistory() {
+            hideAllSections();
+            const section = document.getElementById('purchaseHistory');
+            section.style.display = 'block';
+            
+            const purchases = db.getPurchases(currentUser.id);
+            const purchaseList = document.getElementById('purchaseList');
+            purchaseList.innerHTML = '';
+            
+            if (purchases.length === 0) {
+                purchaseList.innerHTML = '<p>Chưa có lịch sử mua hàng</p>';
+            } else {
+                purchases.forEach(purchase => {
+                    let details = JSON.parse(purchase.details);
+                    let productInfo = '';
+                    
+                    if (purchase.product_type === 'file') {
+                        productInfo = `File: <a href="${details.file_link}" target="_blank">${details.file_link}</a>`;
+                    } else {
+                        productInfo = `Username: <strong>${details.username}</strong>, Password: <strong>${details.password}</strong>`;
+                    }
+                    
+                    purchaseList.innerHTML += `
+                        <div style="background: #f5f5f5; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+                            <p><strong>${purchase.product_type === 'file' ? 'File' : 'Account'}</strong> - ${formatMoney(purchase.price)}đ</p>
+                            <p>${productInfo}</p>
+                            <p style="color: #666; font-size: 12px;">${formatDateTime(purchase.purchase_date)}</p>
+                        </div>
+                    `;
+                });
+            }
+        }
+        
+        function showDepositHistory() {
+            hideAllSections();
+            const section = document.getElementById('depositHistory');
+            section.style.display = 'block';
+            
+            const deposits = db.getDeposits(currentUser.id);
+            const depositList = document.getElementById('depositList');
+            depositList.innerHTML = '';
+            
+            if (deposits.length === 0) {
+                depositList.innerHTML = '<p>Chưa có lịch sử nạp tiền</p>';
+            } else {
+                deposits.forEach(deposit => {
+                    let typeText = '';
+                    let details = '';
+                    
+                    if (deposit.type === 'card') {
+                        typeText = `Thẻ ${deposit.telecom}`;
+                        details = `Seri: ${deposit.serial}, Mã thẻ: ${deposit.pin}`;
+                    } else if (deposit.type === 'bank') {
+                        typeText = `Bank ${deposit.bank_name}`;
+                        details = `Số TK: ${deposit.account_number}, Mã GD: ${deposit.transaction_code}`;
+                    } else {
+                        typeText = `Momo`;
+                        details = `SĐT: ${deposit.momo_phone}, Mã GD: ${deposit.transaction_code}`;
+                    }
+                    
+                    depositList.innerHTML += `
+                        <div style="background: #f5f5f5; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+                            <p><strong>${typeText}</strong> - ${formatMoney(deposit.amount)}đ</p>
+                            <p>${details}</p>
+                            <p>Trạng thái: <span class="status-${deposit.status}">${getStatusText(deposit.status)}</span></p>
+                            <p style="color: #666; font-size: 12px;">${formatDateTime(deposit.created_at)}</p>
+                        </div>
+                    `;
+                });
+            }
+        }
+        
+        function showSpinHistory() {
+            hideAllSections();
+            const section = document.getElementById('spinHistory');
+            section.style.display = 'block';
+            
+            const spins = db.getSpins(currentUser.id);
+            const spinList = document.getElementById('spinList');
+            spinList.innerHTML = '';
+            
+            if (spins.length === 0) {
+                spinList.innerHTML = '<p>Chưa có lịch sử quay</p>';
+            } else {
+                spins.forEach(spin => {
+                    spinList.innerHTML += `
+                        <div style="background: #f5f5f5; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+                            <p><strong>${spin.diamonds_won} Kim Cương</strong></p>
+                            <p style="color: #666; font-size: 12px;">${formatDateTime(spin.spin_date)}</p>
+                        </div>
+                    `;
+                });
+            }
+        }
+        
+        // Withdraw Functions
+        function showWithdrawSection() {
+            hideAllSections();
+            const section = document.getElementById('withdrawSection');
+            section.style.display = 'block';
+            
+            // Load lịch sử rút
+            loadUserWithdrawHistory();
+        }
+        
+        function submitWithdraw(e) {
+            e.preventDefault();
+            
+            if (!currentUser) return false;
+            
+            const amount = parseInt(document.getElementById('withdrawAmount').value);
+            const gameId = document.getElementById('gameId').value;
+            const note = document.getElementById('withdrawNote').value;
+            
+            // Kiểm tra điều kiện
+            if (amount < 100 || amount > 700) {
+                showNotification('Số KC rút phải từ 100 đến 700!', 'error');
+                return false;
+            }
+            
+            if (currentUser.diamonds < amount) {
+                showNotification('Số KC không đủ để rút!', 'error');
+                return false;
+            }
+            
+            // Trừ KC tạm thời
+            const newDiamonds = currentUser.diamonds - amount;
+            db.updateUser(currentUser.id, { diamonds: newDiamonds });
+            session.updateUser({ diamonds: newDiamonds });
+            
+            // Thêm yêu cầu rút
+            db.addWithdraw({
+                user_id: currentUser.id,
+                amount: amount,
+                game_id: gameId,
+                note: note
+            });
+            
+            // Cập nhật UI
+            document.getElementById('userDiamonds').textContent = newDiamonds;
+            
+            // Hiển thị thông báo thành công
+            showSuccessModal('Gửi yêu cầu thành công!',
+                `<p>Yêu cầu rút <strong>${amount} KC</strong> đã được gửi đến admin.</p>
+                 <p>ID Game: <strong>${gameId}</strong></p>
+                 <p>Vui lòng chờ admin xử lý trong vòng 24 giờ.</p>
+                 <p>Số KC còn lại: <strong>${newDiamonds} KC</strong></p>`);
+            
+            // Reset form
+            document.getElementById('withdrawAmount').value = '';
+            document.getElementById('gameId').value = '';
+            document.getElementById('withdrawNote').value = '';
+            
+            // Cập nhật lịch sử
+            loadUserWithdrawHistory();
+            
+            return false;
+        }
+        
+        function loadUserWithdrawHistory() {
+            const withdraws = db.getWithdraws(currentUser.id);
+            const withdrawList = document.getElementById('withdrawList');
+            withdrawList.innerHTML = '';
+            
+            if (withdraws.length === 0) {
+                withdrawList.innerHTML = '<p>Chưa có lịch sử rút KC</p>';
+            } else {
+                withdraws.forEach(withdraw => {
+                    withdrawList.innerHTML += `
+                        <div style="background: #f5f5f5; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+                            <p><strong>${withdraw.amount} KC</strong> - ID: ${withdraw.game_id}</p>
+                            <p>Trạng thái: <span class="status-${withdraw.status}">${getStatusText(withdraw.status)}</span></p>
+                            ${withdraw.note ? `<p>Ghi chú: ${withdraw.note}</p>` : ''}
+                            <p style="color: #666; font-size: 12px;">${formatDateTime(withdraw.created_at)}</p>
+                        </div>
+                    `;
+                });
+            }
+        }
+        
+        function uploadAvatar() {
+            const fileInput = document.getElementById('avatarInput');
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarImg').src = e.target.result;
+                    showNotification('Avatar đã được cập nhật!', 'success');
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+        
+        // Admin Functions
+        function loadAdminData() {
+            if (!currentUser || !currentUser.is_admin) return;
+            
+            document.getElementById('adminName').textContent = currentUser.username;
+            loadUsersTable();
+            loadDepositsTable();
+            loadProductsTables();
+            loadWheelSettings();
+            loadQRTable();
+            loadWithdrawsTable();
+            loadStats();
+        }
+        
+        function switchAdminTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.admin-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+        
+        function loadUsersTable() {
+            const users = db.getUsers();
+            const table = document.getElementById('usersTable');
+            table.innerHTML = '';
+            
+            users.forEach(user => {
+                const spinCount = db.getUserSpinCount(user.id);
+                const deposits = db.getDeposits(user.id);
+                const totalDeposited = deposits
+                    .filter(d => d.status === 'approved')
+                    .reduce((sum, d) => sum + d.amount, 0);
+                const allowedSpins = Math.floor(totalDeposited / 100000);
+                const remainingSpins = allowedSpins - spinCount;
+                
+                table.innerHTML += `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.username} ${user.is_admin ? '<span style="color: red;">(Admin)</span>' : ''}</td>
+                        <td>${formatDate(user.birthdate)}</td>
+                        <td>${formatMoney(user.balance)}đ</td>
+                        <td>${user.diamonds} KC</td>
+                        <td>${formatDate(user.created_at)}</td>
+                        <td>
+                            <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="editUser(${user.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            ${!user.is_admin ? `
+                            <button class="btn btn-warning" style="padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="addBalance(${user.id})">
+                                <i class="fas fa-plus"></i> Tiền
+                            </button>
+                            <button class="btn btn-info" style="padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="addDiamonds(${user.id})">
+                                <i class="fas fa-gem"></i> KC
+                            </button>
+                            <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="subtractBalance(${user.id})">
+                                <i class="fas fa-minus"></i> Tiền
+                            </button>
+                            <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px; margin: 2px;" title="Lượt quay: ${spinCount}/${allowedSpins}">
+                                <i class="fas fa-sync-alt"></i> ${remainingSpins}
+                            </button>
+                            ` : ''}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+        
+        function loadDepositsTable() {
+            const deposits = db.getDeposits();
+            const table = document.getElementById('depositsTable');
+            table.innerHTML = '';
+            
+            deposits.forEach(deposit => {
+                const user = db.getUserById(deposit.user_id);
+                let info = '';
+                
+                if (deposit.type === 'card') {
+                    info = `Seri: ${deposit.serial}<br>Mã: ${deposit.pin}`;
+                } else if (deposit.type === 'bank') {
+                    info = `TK: ${deposit.account_number}<br>Mã: ${deposit.transaction_code}`;
+                } else {
+                    info = `SĐT: ${deposit.momo_phone}<br>Mã: ${deposit.transaction_code}`;
+                }
+                
+                table.innerHTML += `
+                    <tr>
+                        <td>${deposit.id}</td>
+                        <td>${user ? user.username : 'N/A'}</td>
+                        <td>${deposit.type === 'card' ? 'Thẻ ' + deposit.telecom : deposit.type === 'bank' ? 'Bank ' + deposit.bank_name : 'Momo'}</td>
+                        <td>${formatMoney(deposit.amount)}đ</td>
+                        <td>${info}</td>
+                        <td class="status-${deposit.status}">${getStatusText(deposit.status)}</td>
+                        <td>${formatDateTime(deposit.created_at)}</td>
+                        <td>
+                            ${deposit.status === 'pending' ? `
+                            <button class="btn btn-success" style="padding: 5px 10px; font-size: 12px;" onclick="approveDeposit(${deposit.id})">
+                                Duyệt
+                            </button>
+                            <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="rejectDeposit(${deposit.id})">
+                                Từ chối
+                            </button>
+                            ` : 'Đã xử lý'}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+        
+        function loadProductsTables() {
+            // Files table
+            const files = db.getProductsFile();
+            const filesTable = document.getElementById('productsFileTable');
+            filesTable.innerHTML = '';
+            
+            files.forEach(file => {
+                filesTable.innerHTML += `
+                    <tr>
+                        <td>${file.id}</td>
+                        <td>${file.name}</td>
+                        <td>${formatMoney(file.price)}đ</td>
+                        <td><a href="${file.file_link}" target="_blank">${file.file_link}</a></td>
+                        <td>
+                            <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;" onclick="editProduct(${file.id}, 'file')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteProduct(${file.id}, 'file')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            // Accounts table
+            const accounts = db.getProductsAccount();
+            const accountsTable = document.getElementById('productsAccountTable');
+            accountsTable.innerHTML = '';
+            
+            accounts.forEach(account => {
+                const buyer = account.sold_to ? db.getUserById(account.sold_to) : null;
+                const status = account.sold ? 
+                    `<span style="color: red;">Đã bán cho ${buyer ? buyer.username : 'N/A'}</span>` : 
+                    '<span style="color: green;">Còn hàng</span>';
+                
+                accountsTable.innerHTML += `
+                    <tr>
+                        <td>${account.id}</td>
+                        <td>${account.name}</td>
+                        <td>${account.username}</td>
+                        <td>${account.password}</td>
+                        <td>${status}</td>
+                        <td>
+                            <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;" onclick="editProduct(${account.id}, 'account')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteProduct(${account.id}, 'account')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+        
+        function loadWheelSettings() {
+            const settings = db.getWheelSettings();
+            
+            document.getElementById('wheelMin').value = settings.min_diamond || 20;
+            document.getElementById('wheelMax').value = settings.max_diamond || 500;
+            
+            const probabilities = settings.probabilities || [20, 30, 25, 15, 10];
+            const prizes = [20, 50, 100, 200, 500];
+            const container = document.getElementById('wheelProbabilities');
+            container.innerHTML = '';
+            
+            probabilities.forEach((prob, index) => {
+                container.innerHTML += `
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <span style="width: 100px;">${prizes[index]} KC:</span>
+                        <input type="number" value="${prob}" min="0" max="100" 
+                               class="form-control wheel-prob" style="width: 100px; margin-right: 10px;">
+                        <span>%</span>
+                    </div>
+                `;
+            });
+        }
+        
+        function loadQRTable() {
+            const qrs = db.getBankQR();
+            const table = document.getElementById('qrTable');
+            table.innerHTML = '';
+            
+            qrs.forEach(qr => {
+                table.innerHTML += `
+                    <tr>
+                        <td>${qr.id}</td>
+                        <td>${qr.bank_name}</td>
+                        <td>${qr.account_number}</td>
+                        <td>${qr.account_name}</td>
+                        <td>${qr.is_active ? '<span style="color: green;">Đang hoạt động</span>' : 'Không hoạt động'}</td>
+                        <td>
+                            <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;" onclick="activateQR(${qr.id})" ${qr.is_active ? 'disabled' : ''}>
+                                Kích hoạt
+                            </button>
+                            <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteQR(${qr.id})">
+                                Xóa
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+        
+        function loadWithdrawsTable() {
+            const withdraws = db.getWithdraws();
+            const table = document.getElementById('withdrawsTable');
+            table.innerHTML = '';
+            
+            withdraws.forEach(withdraw => {
+                const user = db.getUserById(withdraw.user_id);
+                table.innerHTML += `
+                    <tr>
+                        <td>${withdraw.id}</td>
+                        <td>${user ? user.username : 'N/A'}</td>
+                        <td>${withdraw.amount} KC</td>
+                        <td><strong>${withdraw.game_id}</strong></td>
+                        <td>${withdraw.note || '-'}</td>
+                        <td class="status-${withdraw.status}">${getStatusText(withdraw.status)}</td>
+                        <td>${formatDateTime(withdraw.created_at)}</td>
+                        <td>
+                            ${withdraw.status === 'pending' ? `
+                            <button class="btn btn-success" style="padding: 5px 10px; font-size: 12px;" onclick="approveWithdraw(${withdraw.id})">
+                                Duyệt
+                            </button>
+                            <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="rejectWithdraw(${withdraw.id})">
+                                Từ chối
+                            </button>
+                            ` : 'Đã xử lý'}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+        
+        function loadStats() {
+            const users = db.getUsers();
+            const deposits = db.getDeposits();
+            const spins = db.getSpins();
+            const withdraws = db.getWithdraws();
+            
+            // Total users
+            document.getElementById('totalUsers').textContent = users.filter(u => !u.is_admin).length;
+            
+            // Total revenue (approved deposits)
+            const totalRevenue = deposits
+                .filter(d => d.status === 'approved')
+                .reduce((sum, d) => sum + d.amount, 0);
+            document.getElementById('totalRevenue').textContent = formatMoney(totalRevenue) + 'đ';
+            
+            // Top deposit user
+            const userDeposits = {};
+            deposits
+                .filter(d => d.status === 'approved')
+                .forEach(d => {
+                    if (!userDeposits[d.user_id]) userDeposits[d.user_id] = 0;
+                    userDeposits[d.user_id] += d.amount;
+                });
+            
+            let topUserId = null;
+            let topAmount = 0;
+            
+            for (const [userId, amount] of Object.entries(userDeposits)) {
+                if (amount > topAmount) {
+                    topAmount = amount;
+                    topUserId = userId;
+                }
+            }
+            
+            if (topUserId) {
+                const topUser = db.getUserById(topUserId);
+                document.getElementById('topDepositUser').textContent = 
+                    `${topUser.username} - ${formatMoney(topAmount)}đ`;
+            }
+            
+            // Total diamonds
+            const totalDiamonds = spins.reduce((sum, s) => sum + s.diamonds_won, 0);
+            document.getElementById('totalDiamonds').textContent = totalDiamonds;
+            
+            // Total withdrawn
+            const totalWithdrawn = withdraws
+                .filter(w => w.status === 'approved')
+                .reduce((sum, w) => sum + w.amount, 0);
+            document.getElementById('totalWithdrawn').textContent = totalWithdrawn + ' KC';
+        }
+        
+        function showAddProductModal() {
+            document.getElementById('addProductModal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+        
+        function closeAddProductModal() {
+            document.getElementById('addProductModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+        
+        function toggleProductFields() {
+            const type = document.getElementById('productType').value;
+            document.getElementById('priceField').style.display = type === 'file' ? 'block' : 'none';
+            document.getElementById('fileLinkField').style.display = type === 'file' ? 'block' : 'none';
+            document.getElementById('usernameField').style.display = type === 'account' ? 'block' : 'none';
+            document.getElementById('passwordField').style.display = type === 'account' ? 'block' : 'none';
+            
+            if (type === 'account') {
+                document.getElementById('productPrice').value = 5000;
+                document.getElementById('productPrice').readOnly = true;
+            } else {
+                document.getElementById('productPrice').readOnly = false;
+            }
+        }
+        
+        function addProduct(e) {
+            e.preventDefault();
+            
+            const type = document.getElementById('productType').value;
+            const name = document.getElementById('productName').value;
+            const description = document.getElementById('productDescription').value;
+            
+            if (type === 'file') {
+                const price = parseInt(document.getElementById('productPrice').value);
+                const fileLink = document.getElementById('fileLink').value;
+                
+                // Add to database
+                db.addProductFile({
+                    name: name,
+                    price: price,
+                    description: description,
+                    file_link: fileLink
+                });
+                
+                showNotification('Đã thêm file thành công!', 'success');
+            } else {
+                const username = document.getElementById('accountUsername').value;
+                const password = document.getElementById('accountPassword').value;
+                
+                // Add to database
+                db.addProductAccount({
+                    name: name,
+                    username: username,
+                    password: password,
+                    description: description
+                });
+                
+                showNotification('Đã thêm account thành công!', 'success');
+            }
+            
+            closeAddProductModal();
+            loadProductsTables();
+            return false;
+        }
+        
+        function showAddQRModal() {
+            document.getElementById('addQRModal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+            qrImageBase64 = null;
+            document.getElementById('qrPreview').style.display = 'none';
+            document.getElementById('qrImage').value = '';
+        }
+        
+        function closeAddQRModal() {
+            document.getElementById('addQRModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+        
+        function previewQRImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Check file size (max 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                showNotification('File quá lớn! Vui lòng chọn file nhỏ hơn 2MB.', 'error');
+                return;
+            }
+            
+            // Check file type
+            if (!file.type.match('image.*')) {
+                showNotification('Vui lòng chọn file ảnh!', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                qrImageBase64 = e.target.result;
+                document.getElementById('qrPreviewImage').src = qrImageBase64;
+                document.getElementById('qrPreview').style.display = 'block';
+                document.getElementById('qrImage').value = '';
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function addQRCode(e) {
+            e.preventDefault();
+            
+            const bankName = document.getElementById('qrBankName').value;
+            const accountNumber = document.getElementById('qrAccountNumber').value;
+            const accountName = document.getElementById('qrAccountName').value;
+            const imageLink = document.getElementById('qrImage').value;
+            
+            // Check if we have image
+            let qrImage = qrImageBase64 || imageLink;
+            
+            if (!qrImage) {
+                showNotification('Vui lòng tải lên ảnh QR hoặc nhập link ảnh!', 'error');
+                return;
+            }
+            
+            // Deactivate all other QR codes
+            const qrs = db.getBankQR();
+            qrs.forEach(qr => {
+                db.updateBankQR(qr.id, { is_active: false });
+            });
+            
+            // Add new QR
+            db.addBankQR({
+                bank_name: bankName,
+                account_number: accountNumber,
+                account_name: accountName,
+                qr_image: qrImage
+            });
+            
+            showNotification('Đã thêm QR code thành công!', 'success');
+            closeAddQRModal();
+            loadQRTable();
+            return false;
+        }
+        
+        function saveWheelSettings(e) {
+            e.preventDefault();
+            
+            const min = parseInt(document.getElementById('wheelMin').value);
+            const max = parseInt(document.getElementById('wheelMax').value);
+            
+            const probInputs = document.querySelectorAll('.wheel-prob');
+            const probabilities = Array.from(probInputs).map(input => parseInt(input.value));
+            
+            // Normalize probabilities to sum 100
+            const sum = probabilities.reduce((a, b) => a + b, 0);
+            if (sum !== 100) {
+                showNotification('Tổng xác suất phải bằng 100%!', 'error');
+                return false;
+            }
+            
+            db.updateWheelSettings({
+                min_diamond: min,
+                max_diamond: max,
+                probabilities: probabilities
+            });
+            
+            showNotification('Đã lưu cài đặt vòng quay!', 'success');
+            return false;
+        }
+        
+        // Admin Actions
+        function editUser(userId) {
+            const user = db.getUserById(userId);
+            if (!user) return;
+            
+            const newBalance = prompt(`Chỉnh sửa số dư cho ${user.username}:`, user.balance);
+            if (newBalance !== null) {
+                db.updateUser(userId, { balance: parseInt(newBalance) });
+                showNotification('Đã cập nhật số dư!', 'success');
+                loadUsersTable();
+            }
+        }
+        
+        function addBalance(userId) {
+            const user = db.getUserById(userId);
+            if (!user) return;
+            
+            const amount = prompt(`Cộng số dư cho ${user.username}:`, 0);
+            if (amount !== null && !isNaN(amount)) {
+                const newBalance = user.balance + parseInt(amount);
+                db.updateUser(userId, { balance: newBalance });
+                showNotification(`Đã cộng ${formatMoney(amount)}đ cho ${user.username}!`, 'success');
+                loadUsersTable();
+            }
+        }
+        
+        function addDiamonds(userId) {
+            const user = db.getUserById(userId);
+            if (!user) return;
+            
+            const amount = prompt(`Cộng kim cương cho ${user.username}:`, 0);
+            if (amount !== null && !isNaN(amount)) {
+                const newDiamonds = user.diamonds + parseInt(amount);
+                db.updateUser(userId, { diamonds: newDiamonds });
+                showNotification(`Đã cộng ${amount} KC cho ${user.username}!`, 'success');
+                loadUsersTable();
+            }
+        }
+        
+        function subtractBalance(userId) {
+            const user = db.getUserById(userId);
+            if (!user) return;
+            
+            const amount = prompt(`Trừ số dư cho ${user.username}:`, 0);
+            if (amount !== null && !isNaN(amount)) {
+                const newBalance = Math.max(0, user.balance - parseInt(amount));
+                db.updateUser(userId, { balance: newBalance });
+                showNotification(`Đã trừ ${formatMoney(amount)}đ của ${user.username}!`, 'success');
+                loadUsersTable();
+            }
+        }
+        
+        function approveDeposit(depositId) {
+            db.updateDepositStatus(depositId, 'approved');
+            showNotification('Đã duyệt lệnh nạp tiền!', 'success');
+            loadDepositsTable();
+            loadStats();
+        }
+        
+        function rejectDeposit(depositId) {
+            db.updateDepositStatus(depositId, 'rejected');
+            showNotification('Đã từ chối lệnh nạp tiền!', 'success');
+            loadDepositsTable();
+            loadStats();
+        }
+        
+        function editProduct(productId, type) {
+            alert('Chức năng chỉnh sửa sẽ được cập nhật trong phiên bản tiếp theo!');
+        }
+        
+        function deleteProduct(productId, type) {
+            if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+                if (type === 'file') {
+                    const files = db.getProductsFile();
+                    const filtered = files.filter(f => f.id !== productId);
+                    localStorage.setItem('products_file', JSON.stringify(filtered));
+                } else {
+                    const accounts = db.getProductsAccount();
+                    const filtered = accounts.filter(a => a.id !== productId);
+                    localStorage.setItem('products_account', JSON.stringify(filtered));
+                }
+                
+                showNotification('Đã xóa sản phẩm!', 'success');
+                loadProductsTables();
+            }
+        }
+        
+        function activateQR(qrId) {
+            // Deactivate all QR codes
+            const qrs = db.getBankQR();
+            qrs.forEach(qr => {
+                db.updateBankQR(qr.id, { is_active: false });
+            });
+            
+            // Activate selected QR
+            db.updateBankQR(qrId, { is_active: true });
+            showNotification('Đã kích hoạt QR code!', 'success');
+            loadQRTable();
+        }
+        
+        function deleteQR(qrId) {
+            if (confirm('Bạn có chắc chắn muốn xóa QR code này?')) {
+                const qrs = db.getBankQR();
+                const filtered = qrs.filter(q => q.id !== qrId);
+                localStorage.setItem('bank_qr', JSON.stringify(filtered));
+                
+                showNotification('Đã xóa QR code!', 'success');
+                loadQRTable();
+            }
+        }
+        
+        // Withdraw Admin Actions
+        function approveWithdraw(withdrawId) {
+            db.updateWithdrawStatus(withdrawId, 'approved');
+            
+            // Gửi thông báo cho user
+            const withdraws = JSON.parse(localStorage.getItem('withdraw_history')) || [];
+            const withdraw = withdraws.find(w => w.id == withdrawId);
+            if (withdraw) {
+                const user = db.getUserById(withdraw.user_id);
+                if (user) {
+                    db.addMessage({
+                        user_id: user.id,
+                        type: 'withdraw_approved',
+                        title: 'Yêu cầu rút KC đã được duyệt',
+                        content: `Yêu cầu rút ${withdraw.amount} KC của bạn đã được admin duyệt. Kim cương đã được chuyển đến tài khoản game của bạn.`
+                    });
+                }
+            }
+            
+            showNotification('Đã duyệt yêu cầu rút KC!', 'success');
+            loadWithdrawsTable();
+            loadStats();
+        }
+        
+        function rejectWithdraw(withdrawId) {
+            const withdraws = JSON.parse(localStorage.getItem('withdraw_history')) || [];
+            const withdraw = withdraws.find(w => w.id == withdrawId);
+            
+            if (withdraw) {
+                db.updateWithdrawStatus(withdrawId, 'rejected');
+                
+                // Gửi thông báo cho user
+                const user = db.getUserById(withdraw.user_id);
+                if (user) {
+                    db.addMessage({
+                        user_id: user.id,
+                        type: 'withdraw_rejected',
+                        title: 'Yêu cầu rút KC bị từ chối',
+                        content: `Yêu cầu rút ${withdraw.amount} KC của bạn đã bị từ chối. ${withdraw.amount} KC đã được hoàn lại vào tài khoản.`
+                    });
+                }
+                
+                showNotification('Đã từ chối yêu cầu rút KC!', 'success');
+                loadWithdrawsTable();
+                loadStats();
+            }
+        }
+        
+        // Utility Functions
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+        
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.background = type === 'success' ? '#4CAF50' : '#f44336';
+            notification.style.display = 'block';
+            
+            // Play sound
+            playNotificationSound();
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+        
+        function playNotificationSound() {
+            // Create a simple notification sound
+            try {
+                const context = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = context.createOscillator();
+                const gainNode = context.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(context.destination);
+                
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, context.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.5);
+                
+                oscillator.start(context.currentTime);
+                oscillator.stop(context.currentTime + 0.5);
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+        
+        function showSuccessModal(title, content) {
+            document.getElementById('successContent').innerHTML = `
+                <h4>${title}</h4>
+                ${content}
+            `;
+            document.getElementById('successModal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+            
+            // Play success sound
+            playNotificationSound();
+        }
+        
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+        
+        function formatMoney(amount) {
+            return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN');
+        }
+        
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('vi-VN');
+        }
+        
+        function getStatusText(status) {
+            switch(status) {
+                case 'pending': return 'Chờ duyệt';
+                case 'approved': return 'Đã duyệt';
+                case 'rejected': return 'Từ chối';
+                default: return status;
+            }
+        }
+        
+        // Thêm hàm logout cho user
+        function logoutUser() {
+            session.logout();
+            currentUser = null;
+            closeMenu();
+            showLogin();
+            showNotification('Đã đăng xuất thành công!', 'success');
+        }
+    </script>
+</body>
+</html>
