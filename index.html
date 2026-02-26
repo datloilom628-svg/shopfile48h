@@ -3569,5 +3569,28 @@
             showNotification('Đã đăng xuất thành công!', 'success');
         }
     </script>
-</body>
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyACYPxWqXQ8v2Q2ByqVimtR7p2uOBeRRJU",
+    authDomain: "shopfile24h.firebaseapp.com",
+    projectId: "shopfile24h",
+    storageBucket: "shopfile24h.firebasestorage.app",
+    messagingSenderId: "34635698672",
+    appId: "1:34635698672:web:702895dc7ee00cc8f30d35",
+    measurementId: "G-CF1B4QFW83"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+    </script>
+</body> 
 </html>
