@@ -3570,27 +3570,56 @@
         }
     </script>
     <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyACYPxWqXQ8v2Q2ByqVimtR7p2uOBeRRJU",
-    authDomain: "shopfile24h.firebaseapp.com",
-    projectId: "shopfile24h",
-    storageBucket: "shopfile24h.firebasestorage.app",
-    messagingSenderId: "34635698672",
-    appId: "1:34635698672:web:702895dc7ee00cc8f30d35",
-    measurementId: "G-CF1B4QFW83"
-  };
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+import { 
+  getFirestore, 
+  collection, 
+  onSnapshot 
+} from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyACYPxWqXQ8v2Q2ByqVimtR7p2uOBeRRJU",
+  authDomain: "shopfile24h.firebaseapp.com",
+  projectId: "shopfile24h",
+  storageBucket: "shopfile24h.firebasestorage.app",
+  messagingSenderId: "34635698672",
+  appId: "1:34635698672:web:702895dc7ee00cc8f30d35",
+  measurementId: "G-CF1B4QFW83"
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+// 🔥 THÊM DÒNG NÀY
+const db = getFirestore(app);
+
+// 🔥 ADMIN realtime
+const ordersTable = document.getElementById("ordersTable");
+
+onSnapshot(collection(db, "orders"), (snapshot) => {
+  ordersTable.innerHTML = "";
+
+  snapshot.forEach((doc) => {
+    const order = doc.data();
+
+    const row = `
+      <tr>
+        <td>${doc.id}</td>
+        <td>${order.user}</td>
+        <td>${order.product}</td>
+        <td>${new Date(order.time).toLocaleString()}</td>
+        <td>${order.status || "Chờ xử lý"}</td>
+        <td><button>Xem</button></td>
+      </tr>
+    `;
+
+    ordersTable.innerHTML += row;
+  });
+});
+
     </script>
 </body> 
 </html>
