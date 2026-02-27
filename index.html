@@ -3573,11 +3573,11 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
-
 import { 
   getFirestore, 
   collection, 
-  onSnapshot 
+  onSnapshot,
+  addDoc
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -3592,34 +3592,58 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-
-// 🔥 THÊM DÒNG NÀY
 const db = getFirestore(app);
 
-// 🔥 ADMIN realtime
-const ordersTable = document.getElementById("ordersTable");
+//////////////////////////////////////////////////////
+// 🔥 NÚT MUA
+//////////////////////////////////////////////////////
 
-onSnapshot(collection(db, "orders"), (snapshot) => {
-  ordersTable.innerHTML = "";
+document.getElementById("buyBtn")?.addEventListener("click", async () => {
 
-  snapshot.forEach((doc) => {
-    const order = doc.data();
+  const currentUserEmail = "user@gmail.com"; // sau này có auth thì thay bằng auth.email
+  const productName = "Sản phẩm test";
 
-    const row = `
-      <tr>
-        <td>${doc.id}</td>
-        <td>${order.user}</td>
-        <td>${order.product}</td>
-        <td>${new Date(order.time).toLocaleString()}</td>
-        <td>${order.status || "Chờ xử lý"}</td>
-        <td><button>Xem</button></td>
-      </tr>
-    `;
-
-    ordersTable.innerHTML += row;
+  await addDoc(collection(db, "orders"), {
+    user: currentUserEmail,
+    product: productName,
+    time: Date.now(),
+    status: "Chờ xử lý"
   });
+
+  alert("Đặt hàng thành công!");
 });
 
-    </script>
+//////////////////////////////////////////////////////
+// 🔥 ADMIN REALTIME
+//////////////////////////////////////////////////////
+
+const ordersTable = document.getElementById("ordersTable");
+
+if (ordersTable) {
+  onSnapshot(collection(db, "orders"), (snapshot) => {
+
+    ordersTable.innerHTML = "";
+
+    snapshot.forEach((doc) => {
+      const order = doc.data();
+
+      const row = `
+        <tr>
+          <td>${doc.id}</td>
+          <td>${order.user}</td>
+          <td>${order.product}</td>
+          <td>${new Date(order.time).toLocaleString()}</td>
+          <td>${order.status}</td>
+          <td>-</td>
+        </tr>
+      `;
+
+      ordersTable.innerHTML += row;
+    });
+
+  });
+}
+
+                                                    </script>
 </body> 
 </html>
